@@ -22,9 +22,6 @@ const db = mysql.createConnection({
 //     }
 //   });
 
-app.get("/", (req,res) => {
-    res.json("hello");
-})
 
 // GET ALL PROJECTS
 app.get("/projects", (req,res)=> {
@@ -49,6 +46,18 @@ app.post("/projects", (req,res) => {
     db.query(q, [values], (err, data) => {
         if (err) return res.json(err);
         return res.json("Project has been added");
+    })
+})
+
+
+// DELETE PROJECT 
+app.delete("/projects/:id", (req,res) => {
+    const q = "DELETE FROM projects WHERE project_id = ?";
+
+    const value = req.params.id
+
+    db.query(q, value, (err, data) => {
+        return res.json("Project has been deleted");
     })
 })
 
