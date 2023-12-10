@@ -23,8 +23,10 @@ const db = mysql.createConnection({
 //   });
 
 
+// ROUTES
+
 // GET ALL PROJECTS
-app.get("/projects", (req,res)=> {
+app.get("/projects", (req, res) => {
     const q = "SELECT * FROM projects"
     db.query(q, (err,data)=> {
         if (err) return res.json(err);
@@ -32,8 +34,18 @@ app.get("/projects", (req,res)=> {
     })
 })
 
+// SELECT A PROJECT
+app.get("/projects/:id", (req, res) => {
+    const q = "SELECT * FROM projects WHERE project_id = ? LIMIT 1"
+    const value = req.params.id
+
+    db.query(q, value, (err, data) => {
+        return res.json(data[0]);
+    })
+})
+
 // CREATE PROJECT
-app.post("/projects", (req,res) => {
+app.post("/projects", (req, res) => {
     const q = "INSERT INTO projects (`project_id`, `title`, `author`, `html`, `css`, `js`) VALUES (?)"
     const values = [
         req.body.project_id,
@@ -51,7 +63,7 @@ app.post("/projects", (req,res) => {
 
 
 // DELETE PROJECT 
-app.delete("/projects/:id", (req,res) => {
+app.delete("/projects/:id", (req, res) => {
     const q = "DELETE FROM projects WHERE project_id = ?";
 
     const value = req.params.id
