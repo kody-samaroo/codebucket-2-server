@@ -40,6 +40,7 @@ app.get("/projects/:id", (req, res) => {
     const value = req.params.id
 
     db.query(q, value, (err, data) => {
+        if (err) return res.json(err);
         return res.json(data[0]);
     })
 })
@@ -61,6 +62,16 @@ app.post("/projects", (req, res) => {
     })
 })
 
+// UPDATE PROJECT
+app.patch("/projects/:id", (req, res) => {
+    const q = `UPDATE projects SET title = '${req.body.title}', html = '${req.body.html}', css = '${req.body.css}', js = '${req.body.js}' WHERE project_id = ${req.body.project_id};`
+
+    db.query(q, (err, data) => {
+        if (err) return res.json(err);
+        return res.json("Project has been added");
+    })
+
+})
 
 // DELETE PROJECT 
 app.delete("/projects/:id", (req, res) => {
@@ -69,6 +80,7 @@ app.delete("/projects/:id", (req, res) => {
     const value = req.params.id
 
     db.query(q, value, (err, data) => {
+        if (err) return res.json(err);
         return res.json("Project has been deleted");
     })
 })
